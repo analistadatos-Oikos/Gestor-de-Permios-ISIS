@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ISIS API | Sistema de Seguridad</title>
+    <style>
+        /* Eliminamos margenes y scrolls para que parezca una app nativa */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #001a4d; /* Fondo azul oscuro corporativo mientras carga */
+        }
+
+        /* El iframe es el que hace la magia del enmascaramiento */
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe src="https://script.google.com/macros/s/AKfycbyYPx_dgZL4Pf0-0Qvw344On8s3vryrGLSWGlPbFBUeThJQr31OyEfBWg_wHDKfZkNqTA/exec" 
+            allow="camera; microphone; geolocation">
+    </iframe>
+
+</body>
+</html>
