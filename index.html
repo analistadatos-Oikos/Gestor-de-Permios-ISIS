@@ -1,36 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ISIS API | Sistema de Seguridad</title>
-    <style>
-        /* Eliminamos margenes y scrolls para que parezca una app nativa */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #001a4d; /* Fondo azul oscuro corporativo mientras carga */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ISIS API</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body,html{height:100%;width:100%;overflow:hidden;background:#eef4ff;font-family:system-ui,sans-serif;}
 
-        /* El iframe es el que hace la magia del enmascaramiento */
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  #splash{
+    position:fixed;inset:0;z-index:9999;background:#eef4ff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transition:opacity .55s ease;
+  }
+  #splash.hide{opacity:0;pointer-events:none;}
+  #splash::before{
+    content:'';position:absolute;inset:0;
+    background-image:radial-gradient(circle,#bfdbfe 1px,transparent 1px);
+    background-size:28px 28px;opacity:.35;
+  }
+
+  .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+
+  .bot-wrap{
+    animation:float 2.4s ease-in-out infinite;
+    filter:drop-shadow(0 14px 20px rgba(0,71,255,.18));
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-13px);}}
+
+  .bot-gnd{
+    width:60px;height:9px;border-radius:50%;
+    background:rgba(0,71,255,.12);margin:2px auto 16px;
+    animation:gnd 2.4s ease-in-out infinite;
+  }
+  @keyframes gnd{0%,100%{transform:scaleX(1);opacity:.5;}50%{transform:scaleX(.5);opacity:.15;}}
+
+  .r-eye-l{animation:blink 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+  .r-eye-r{animation:blink 3s ease-in-out infinite .1s;transform-box:fill-box;transform-origin:center;}
+  @keyframes blink{0%,84%,100%{transform:scaleY(1);}89%{transform:scaleY(.05);}}
+
+  .r-arm-l{animation:armL 2s ease-in-out infinite;transform-box:fill-box;transform-origin:90% 10%;}
+  .r-arm-r{animation:armR 2s ease-in-out infinite;transform-box:fill-box;transform-origin:10% 10%;}
+  @keyframes armL{0%,100%{transform:rotate(0);}40%{transform:rotate(12deg);}}
+  @keyframes armR{0%,100%{transform:rotate(0);}40%{transform:rotate(-22deg);}70%{transform:rotate(6deg);}}
+
+  .r-ant{animation:antLED 1s ease-in-out infinite;}
+  @keyframes antLED{0%,100%{opacity:1;}50%{opacity:.08;}}
+
+  .r-led1{animation:led 1.3s ease-in-out infinite;}
+  .r-led2{animation:led 1.3s ease-in-out infinite .35s;}
+  .r-led3{animation:led 1.3s ease-in-out infinite .7s;}
+  @keyframes led{0%,100%{opacity:1;}50%{opacity:.18;}}
+
+  .r-scan{animation:scan 2s linear infinite;}
+  @keyframes scan{0%{transform:translateY(-20px);opacity:0;}20%{opacity:.5;}80%{opacity:.5;}100%{transform:translateY(20px);opacity:0;}}
+
+  .sp-title{font-size:20px;font-weight:900;color:#001a4d;letter-spacing:-.3px;margin-bottom:3px;}
+  .sp-sub{font-size:9px;font-weight:800;color:#0047ff;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:18px;}
+
+  .dots{display:flex;gap:7px;}
+  .dots span{width:8px;height:8px;border-radius:50%;background:#0047ff;animation:db 1.1s ease-in-out infinite;}
+  .dots span:nth-child(2){animation-delay:.18s;background:#60a5fa;}
+  .dots span:nth-child(3){animation-delay:.36s;background:#bfdbfe;}
+  @keyframes db{0%,100%{transform:translateY(0);opacity:.6;}50%{transform:translateY(-7px);opacity:1;}}
+
+  iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;opacity:0;transition:opacity .5s ease;}
+  iframe.show{opacity:1;}
+</style>
 </head>
 <body>
 
-    <iframe src="https://script.google.com/macros/s/AKfycbzYYDAJHstCDzpjlki22h1SMRhk1p5nu-NE8EQaTCS8cUzVBlJfBFHYe0v5iEPF6RU-xQ/exec" 
-            allow="camera; microphone; geolocation">
-    </iframe>
+<div id="splash">
+  <div class="inner">
+    <div class="bot-wrap">
+      <svg width="148" height="192" viewBox="0 0 148 192" fill="none" xmlns="http://www.w3.org/2000/svg">
 
+        <!-- ANTENA -->
+        <rect x="69" y="2" width="10" height="18" rx="5" fill="#93c5fd"/>
+        <circle class="r-ant" cx="74" cy="2" r="6" fill="#0047ff"/>
+        <circle cx="74" cy="2" r="10" fill="#0047ff" fill-opacity=".1"/>
+        <circle cx="74" cy="2" r="2.5" fill="white" fill-opacity=".7"/>
+
+        <!-- CABEZA cuadrada -->
+        <rect x="18" y="18" width="112" height="74" rx="16" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+        <rect x="18" y="18" width="112" height="22" rx="16" fill="#eff6ff"/>
+        <rect x="18" y="32" width="112" height="8" fill="#eff6ff"/>
+
+        <!-- VISOR -->
+        <rect x="27" y="28" width="94" height="52" rx="10" fill="#0f172a"/>
+        <clipPath id="vc"><rect x="27" y="28" width="94" height="52" rx="10"/></clipPath>
+        <g clip-path="url(#vc)">
+          <rect class="r-scan" x="27" y="28" width="94" height="5" rx="2" fill="#0047ff" fill-opacity=".4"/>
+        </g>
+        <rect x="31" y="31" width="22" height="5" rx="2.5" fill="white" fill-opacity=".1"/>
+
+        <!-- OJO IZQ -->
+        <g class="r-eye-l">
+          <rect x="36" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+          <rect x="41" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+          <circle cx="44" cy="46" r="4" fill="white" fill-opacity=".9"/>
+          <circle cx="55" cy="53" r="1.5" fill="white" fill-opacity=".6"/>
+        </g>
+
+        <!-- OJO DER -->
+        <g class="r-eye-r">
+          <rect x="84" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+          <rect x="89" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+          <circle cx="92" cy="46" r="4" fill="white" fill-opacity=".9"/>
+          <circle cx="103" cy="53" r="1.5" fill="white" fill-opacity=".6"/>
+        </g>
+
+        <!-- BOCA SONRIENTE (modificada) -->
+        <path d="M54 68 Q74 80, 94 68" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+        <!-- TORNILLOS cabeza -->
+        <circle cx="26" cy="26" r="4" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1.2"/>
+        <line x1="24" y1="24" x2="28" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
+        <line x1="28" y1="24" x2="24" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
+        <circle cx="122" cy="26" r="4" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1.2"/>
+        <line x1="120" y1="24" x2="124" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
+        <line x1="124" y1="24" x2="120" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
+
+        <!-- CUELLO -->
+        <rect x="58" y="91" width="32" height="10" rx="5" fill="#dbeafe"/>
+        <rect x="63" y="98" width="22" height="6" rx="3" fill="#bfdbfe"/>
+
+        <!-- CUERPO -->
+        <rect x="24" y="99" width="100" height="68" rx="14" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+        <rect x="24" y="99" width="100" height="20" rx="14" fill="#eff6ff"/>
+        <rect x="24" y="111" width="100" height="8" fill="#eff6ff"/>
+
+        <!-- PANEL PECHO -->
+        <rect x="38" y="112" width="72" height="42" rx="9" fill="#f8faff" stroke="#dbeafe" stroke-width="1.5"/>
+        <circle class="r-led1" cx="57" cy="126" r="5.5" fill="#0047ff"/>
+        <circle class="r-led2" cx="74" cy="126" r="5.5" fill="#3b82f6"/>
+        <circle class="r-led3" cx="91" cy="126" r="5.5" fill="#93c5fd"/>
+        <rect x="46" y="136" width="56" height="4" rx="2" fill="#dbeafe"/>
+        <rect x="46" y="144" width="38" height="4" rx="2" fill="#eff6ff"/>
+        <rect x="87" y="144" width="15" height="4" rx="2" fill="#0047ff" fill-opacity=".35"/>
+
+        <!-- TORNILLOS cuerpo -->
+        <circle cx="32" cy="107" r="3.5" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="30" y1="105" x2="34" y2="109" stroke="#93c5fd" stroke-width="1"/>
+        <line x1="34" y1="105" x2="30" y2="109" stroke="#93c5fd" stroke-width="1"/>
+        <circle cx="116" cy="107" r="3.5" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="114" y1="105" x2="118" y2="109" stroke="#93c5fd" stroke-width="1"/>
+        <line x1="118" y1="105" x2="114" y2="109" stroke="#93c5fd" stroke-width="1"/>
+
+        <!-- BRAZO IZQ corto cuadrado -->
+        <g class="r-arm-l">
+          <rect x="2" y="102" width="24" height="34" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
+          <rect x="0" y="132" width="26" height="18" rx="7" fill="#dbeafe"/>
+          <rect x="4" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
+          <rect x="11" y="147" width="5" height="8" rx="2.5" fill="#bfdbfe"/>
+          <rect x="18" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
+        </g>
+
+        <!-- BRAZO DER wave -->
+        <g class="r-arm-r">
+          <rect x="122" y="102" width="24" height="34" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
+          <rect x="122" y="132" width="26" height="18" rx="7" fill="#dbeafe"/>
+          <rect x="124" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
+          <rect x="131" y="147" width="5" height="8" rx="2.5" fill="#bfdbfe"/>
+          <rect x="138" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
+        </g>
+
+        <!-- PIERNAS cortas -->
+        <rect x="40" y="164" width="26" height="24" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
+        <rect x="82" y="164" width="26" height="24" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
+
+        <!-- PIES cuadrados -->
+        <rect x="32" y="182" width="40" height="14" rx="6" fill="#dbeafe"/>
+        <rect x="76" y="182" width="40" height="14" rx="6" fill="#dbeafe"/>
+        <rect x="36" y="186" width="10" height="6" rx="3" fill="#bfdbfe"/>
+        <rect x="80" y="186" width="10" height="6" rx="3" fill="#bfdbfe"/>
+
+      </svg>
+    </div>
+
+    <div class="bot-gnd"></div>
+    <div class="sp-title">ISIS API</div>
+    <div class="sp-sub">Cargando sistema...</div>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<iframe
+  id="app"
+  src="https://script.google.com/macros/s/AKfycbzYYDAJHstCDzpjlki22h1SMRhk1p5nu-NE8EQaTCS8cUzVBlJfBFHYe0v5iEPF6RU-xQ/exec"
+  allow="camera; microphone; geolocation">
+</iframe>
+
+<script>
+  const fr = document.getElementById('app');
+  const sp = document.getElementById('splash');
+  function done(){
+    fr.classList.add('show');
+    sp.classList.add('hide');
+    setTimeout(()=>{ sp.style.display='none'; }, 600);
+  }
+  fr.addEventListener('load', ()=> setTimeout(done, 500));
+  setTimeout(()=>{ if(!fr.classList.contains('show')) done(); }, 10000);
+</script>
 </body>
 </html>
