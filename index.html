@@ -11,9 +11,7 @@
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   html, body { height:100%; width:100%; overflow:hidden; font-family:'Plus Jakarta Sans',sans-serif; background:#f0f4ff; }
 
-  /* ══════════════════════════════════════
-     MENÚ
-  ══════════════════════════════════════ */
+  /* ══ MENÚ ══════════════════════════════════ */
   #menu {
     position:fixed; inset:0; z-index:200;
     display:flex;
@@ -21,30 +19,20 @@
   }
   #menu.hide { opacity:0; transform:scale(1.02); pointer-events:none; }
 
-  /* panel blanco */
   .menu-left {
-    width:420px; min-width:340px;
-    background:#fff;
+    width:420px; min-width:340px; background:#fff;
     display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
-    padding:56px 60px;
-    position:relative; z-index:2;
+    padding:56px 60px; position:relative; z-index:2;
   }
 
-  .menu-logo {
-    display:flex; align-items:center; gap:12px; margin-bottom:40px;
-  }
-  .menu-logo-icon {
-    background:var(--blue); width:40px; height:40px; border-radius:10px;
-    display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px;
-  }
+  /* robot SVG logo */
+  .menu-logo { display:flex; align-items:center; gap:14px; margin-bottom:40px; }
   .menu-logo span { font-weight:900; font-size:20px; color:var(--dark); letter-spacing:-.5px; }
 
   .menu-headline { font-size:26px; font-weight:800; color:var(--dark); margin-bottom:8px; line-height:1.2; }
   .menu-sub { font-size:13px; color:#64748b; font-weight:500; line-height:1.6; margin-bottom:32px; }
 
-  /* tarjetas de perfil */
   .profile-cards { display:flex; flex-direction:column; gap:10px; width:100%; }
-
   .profile-card {
     display:flex; align-items:center; gap:14px;
     padding:16px 18px; border-radius:12px; cursor:pointer;
@@ -57,8 +45,7 @@
   }
   .profile-card-icon {
     width:42px; height:42px; border-radius:10px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:17px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;
   }
   .profile-card-icon.admin { background:#eff6ff; color:var(--blue); }
   .profile-card-icon.user  { background:#f0fdf4; color:#10b981; }
@@ -93,35 +80,26 @@
   .deco-pill-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; animation:blink 1.4s ease-in-out infinite; }
   @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
 
-  @media(max-width:680px){
-    .menu-right { display:none; }
-    .menu-left  { width:100%; padding:44px 28px; }
-  }
+  @media(max-width:680px){ .menu-right{display:none;} .menu-left{width:100%;padding:44px 28px;} }
 
-  /* ══════════════════════════════════════
-     LOADER (pantalla de carga entre scripts)
-  ══════════════════════════════════════ */
+  /* ══ LOADER silencioso ══════════════════════ */
   #loader {
     position:fixed; inset:0; z-index:150;
-    background:#f0f4ff;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:16px;
+    background:rgba(240,244,255,.92); backdrop-filter:blur(6px);
+    display:flex; align-items:center; justify-content:center;
     opacity:0; pointer-events:none;
-    transition:opacity .3s ease;
+    transition:opacity .25s ease;
   }
   #loader.show { opacity:1; pointer-events:all; }
-  .loader-spinner {
-    width:44px; height:44px; border-radius:50%;
+  .loader-ring {
+    width:42px; height:42px; border-radius:50%;
     border:3px solid #dbeafe;
     border-top-color:var(--blue);
-    animation:spin .8s linear infinite;
+    animation:spin .7s linear infinite;
   }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .loader-text { font-size:13px; font-weight:700; color:#64748b; }
 
-  /* ══════════════════════════════════════
-     IFRAME
-  ══════════════════════════════════════ */
+  /* ══ IFRAME ═════════════════════════════════ */
   #app {
     position:fixed; inset:0; z-index:100;
     border:none; width:100%; height:100%;
@@ -129,55 +107,59 @@
     transition:opacity .35s ease;
   }
   #app.show { opacity:1; pointer-events:all; }
+  #app.with-bar { top:54px; height:calc(100% - 54px); }
 
-  /* ══════════════════════════════════════
-     PANEL SUPERIOR (toggle + volver)
-     solo visible dentro del iframe
-  ══════════════════════════════════════ */
+  /* ══ TOPBAR glass ════════════════════════════ */
   #topbar {
     position:fixed; top:0; left:0; right:0; z-index:9999;
-    height:52px;
-    background:#fff;
-    border-bottom:1px solid #e2e8f0;
+    height:54px;
+    /* glass sobre el iframe */
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(18px) saturate(180%);
+    -webkit-backdrop-filter:blur(18px) saturate(180%);
+    border-bottom:1px solid rgba(255,255,255,0.5);
+    box-shadow:0 1px 16px rgba(0,29,100,.08);
     display:none; align-items:center; justify-content:space-between;
     padding:0 20px;
-    box-shadow:0 2px 12px rgba(0,0,0,.06);
   }
   #topbar.visible { display:flex; }
 
-  .topbar-logo { display:flex; align-items:center; gap:9px; }
-  .topbar-logo-icon {
-    background:var(--blue); width:30px; height:30px; border-radius:8px;
-    display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px;
-  }
-  .topbar-logo span { font-weight:900; font-size:15px; color:var(--dark); letter-spacing:-.3px; }
+  /* robot pequeño en topbar */
+  .topbar-brand { display:flex; align-items:center; gap:10px; }
+  .topbar-brand-name { font-weight:900; font-size:15px; color:var(--dark); letter-spacing:-.3px; }
 
-  /* toggle dentro del topbar */
+  /* toggle pill glass */
   .topbar-toggle {
-    display:flex; background:#f1f5f9; border-radius:100px; padding:3px; gap:0;
+    display:flex;
+    background:rgba(0,29,100,.06);
+    border:1px solid rgba(0,71,255,.12);
+    border-radius:100px; padding:3px; gap:0;
   }
   .ttoggle-btn {
     display:flex; align-items:center; gap:6px;
     padding:7px 18px; border-radius:100px; border:none;
     background:transparent; font-family:inherit;
-    font-size:12px; font-weight:800; color:#7a90b0; cursor:pointer;
-    transition:all .22s ease;
+    font-size:12px; font-weight:800; color:rgba(0,26,77,.45); cursor:pointer;
+    transition:all .22s ease; white-space:nowrap;
   }
   .ttoggle-btn i { font-size:11px; }
-  .ttoggle-btn.active { background:var(--blue); color:#fff; box-shadow:0 3px 10px rgba(0,71,255,.3); }
+  .ttoggle-btn.active {
+    background:var(--blue); color:#fff;
+    box-shadow:0 3px 12px rgba(0,71,255,.35);
+  }
 
+  /* botón volver glass */
   .topbar-back {
     display:flex; align-items:center; gap:7px;
-    background:transparent; border:1.5px solid #e2e8f0;
+    background:rgba(255,255,255,0.6);
+    border:1.5px solid rgba(0,71,255,.15);
     border-radius:9px; padding:7px 14px;
     font-family:inherit; font-size:12px; font-weight:800;
-    color:#64748b; cursor:pointer;
+    color:rgba(0,26,77,.6); cursor:pointer;
     transition:all .2s ease;
+    backdrop-filter:blur(8px);
   }
-  .topbar-back:hover { border-color:var(--blue); color:var(--blue); }
-
-  /* cuando el topbar está visible, el iframe baja para no quedar tapado */
-  #app.with-bar { top:52px; height:calc(100% - 52px); }
+  .topbar-back:hover { background:rgba(0,71,255,.08); color:var(--blue); border-color:var(--blue); }
 </style>
 </head>
 <body>
@@ -185,10 +167,34 @@
 <!-- ══ MENÚ ══ -->
 <div id="menu">
   <div class="menu-left">
+
     <div class="menu-logo">
-      <div class="menu-logo-icon"><i class="fa-solid fa-eye"></i></div>
+      <!-- Robot ISIS SVG compacto -->
+      <svg width="40" height="52" viewBox="0 0 148 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="69" y="2" width="10" height="18" rx="5" fill="#93c5fd"/>
+        <circle cx="74" cy="2" r="6" fill="#0047ff"/>
+        <circle cx="74" cy="2" r="2.5" fill="white" fill-opacity=".7"/>
+        <rect x="18" y="18" width="112" height="74" rx="16" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+        <rect x="18" y="18" width="112" height="22" rx="16" fill="#eff6ff"/>
+        <rect x="18" y="32" width="112" height="8" fill="#eff6ff"/>
+        <rect x="27" y="28" width="94" height="52" rx="10" fill="#0f172a"/>
+        <rect x="36" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+        <rect x="41" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+        <circle cx="44" cy="46" r="4" fill="white" fill-opacity=".9"/>
+        <rect x="84" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+        <rect x="89" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+        <circle cx="92" cy="46" r="4" fill="white" fill-opacity=".9"/>
+        <path d="M54 68 Q74 80, 94 68" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="58" y="91" width="32" height="10" rx="5" fill="#dbeafe"/>
+        <rect x="24" y="99" width="100" height="68" rx="14" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+        <rect x="38" y="112" width="72" height="42" rx="9" fill="#f8faff" stroke="#dbeafe" stroke-width="1.5"/>
+        <circle cx="57" cy="126" r="5.5" fill="#0047ff"/>
+        <circle cx="74" cy="126" r="5.5" fill="#3b82f6"/>
+        <circle cx="91" cy="126" r="5.5" fill="#93c5fd"/>
+      </svg>
       <span>ISIS API</span>
     </div>
+
     <h1 class="menu-headline">Acceso Seguro<br>al Gateway</h1>
     <p class="menu-sub">Selecciona tu perfil para continuar<br>dentro del ecosistema ISIS.</p>
 
@@ -210,6 +216,7 @@
         <i class="fa-solid fa-chevron-right profile-card-arrow"></i>
       </div>
     </div>
+
   </div>
 
   <div class="menu-right">
@@ -224,16 +231,32 @@
 </div>
 
 <!-- ══ LOADER ══ -->
-<div id="loader">
-  <div class="loader-spinner"></div>
-  <div class="loader-text" id="loader-text">Cargando...</div>
-</div>
+<div id="loader"><div class="loader-ring"></div></div>
 
-<!-- ══ TOPBAR (toggle + volver) ══ -->
+<!-- ══ TOPBAR glass ══ -->
 <div id="topbar">
-  <div class="topbar-logo">
-    <div class="topbar-logo-icon"><i class="fa-solid fa-eye"></i></div>
-    <span>ISIS API</span>
+  <div class="topbar-brand">
+    <!-- Robot mini en topbar -->
+    <svg width="24" height="31" viewBox="0 0 148 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="69" y="2" width="10" height="18" rx="5" fill="#93c5fd"/>
+      <circle cx="74" cy="2" r="6" fill="#0047ff"/>
+      <circle cx="74" cy="2" r="2.5" fill="white" fill-opacity=".7"/>
+      <rect x="18" y="18" width="112" height="74" rx="16" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+      <rect x="27" y="28" width="94" height="52" rx="10" fill="#0f172a"/>
+      <rect x="36" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+      <rect x="41" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+      <circle cx="44" cy="46" r="4" fill="white" fill-opacity=".9"/>
+      <rect x="84" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
+      <rect x="89" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
+      <circle cx="92" cy="46" r="4" fill="white" fill-opacity=".9"/>
+      <path d="M54 68 Q74 80, 94 68" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <rect x="24" y="99" width="100" height="68" rx="14" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
+      <rect x="38" y="112" width="72" height="42" rx="9" fill="#f8faff" stroke="#dbeafe" stroke-width="1.5"/>
+      <circle cx="57" cy="126" r="5.5" fill="#0047ff"/>
+      <circle cx="74" cy="126" r="5.5" fill="#3b82f6"/>
+      <circle cx="91" cy="126" r="5.5" fill="#93c5fd"/>
+    </svg>
+    <span class="topbar-brand-name">ISIS API</span>
   </div>
 
   <div class="topbar-toggle">
@@ -261,125 +284,95 @@
 
   let current = null;
   let loadTimer = null;
+  let loadCount = 0;
+
   const menu   = document.getElementById('menu');
   const app    = document.getElementById('app');
   const loader = document.getElementById('loader');
   const topbar = document.getElementById('topbar');
 
-  function mostrarLoader(texto) {
-    document.getElementById('loader-text').textContent = texto || 'Cargando...';
-    loader.classList.add('show');
-  }
-  function ocultarLoader() { loader.classList.remove('show'); }
+  const showLoader = () => loader.classList.add('show');
+  const hideLoader = () => loader.classList.remove('show');
 
-  function setToggleActivo(mode) {
+  function setActive(mode) {
     document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
     document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
   }
 
+  function onFrameReady() {
+    clearTimeout(loadTimer);
+    hideLoader();
+    app.classList.add('show');
+  }
+
   function entrar(mode) {
     current = mode;
-    // esconder menu
+    loadCount = 0;
     menu.classList.add('hide');
-    mostrarLoader(mode === 'admin' ? 'Cargando panel Admin...' : 'Cargando portal Usuario...');
+    showLoader();
 
     app.classList.remove('show');
     app.classList.add('with-bar');
     app.src = URLS[mode];
 
-    // cuando el iframe carga
-    app.onload = function() {
-      clearTimeout(loadTimer);
-      ocultarLoader();
-      app.classList.add('show');
-      topbar.classList.add('visible');
-      setToggleActivo(mode);
-
-      // vigilar si el usuario hace "Salir" (la URL del iframe vuelve al mismo src o cambia)
-      watchReload();
+    app.onload = () => {
+      loadCount++;
+      if (loadCount === 1) {
+        // primera carga: mostrar
+        onFrameReady();
+        topbar.classList.add('visible');
+        setActive(mode);
+      } else {
+        // recarga posterior (usuario dio Salir) → recargar silencioso
+        app.classList.remove('show');
+        showLoader();
+        setTimeout(() => {
+          app.src = URLS[current];
+          loadCount = 0;
+        }, 400);
+      }
     };
 
-    // fallback por si onload no dispara (cross-origin)
-    loadTimer = setTimeout(() => {
-      ocultarLoader();
-      app.classList.add('show');
-      topbar.classList.add('visible');
-      setToggleActivo(mode);
-      watchReload();
-    }, 5000);
+    loadTimer = setTimeout(() => { onFrameReady(); topbar.classList.add('visible'); setActive(mode); }, 6000);
   }
 
   function cambiar(mode) {
     if (mode === current) return;
     current = mode;
-    setToggleActivo(mode);
-
-    // ocultar iframe con loader
+    loadCount = 0;
+    setActive(mode);
     app.classList.remove('show');
-    mostrarLoader(mode === 'admin' ? 'Cargando panel Admin...' : 'Cargando portal Usuario...');
+    showLoader();
 
     setTimeout(() => {
       app.src = URLS[mode];
-      app.onload = function() {
-        clearTimeout(loadTimer);
-        ocultarLoader();
-        app.classList.add('show');
-        watchReload();
+      app.onload = () => {
+        loadCount++;
+        if (loadCount === 1) {
+          onFrameReady();
+        } else {
+          app.classList.remove('show');
+          showLoader();
+          setTimeout(() => { app.src = URLS[current]; loadCount = 0; }, 400);
+        }
       };
-      loadTimer = setTimeout(() => {
-        ocultarLoader();
-        app.classList.add('show');
-        watchReload();
-      }, 5000);
+      clearTimeout(loadTimer);
+      loadTimer = setTimeout(onFrameReady, 6000);
     }, 300);
   }
 
   function volver() {
     app.classList.remove('show');
-    topbar.classList.remove('visible');
     app.classList.remove('with-bar');
+    topbar.classList.remove('visible');
     clearTimeout(loadTimer);
-    ocultarLoader();
+    hideLoader();
     setTimeout(() => {
       app.src = '';
       current = null;
+      loadCount = 0;
       menu.classList.remove('hide');
     }, 350);
-  }
-
-  // Detectar "Salir" dentro del script: cuando el iframe recarga el mismo src
-  // (Google Apps Script hace location.reload() al cerrar sesión)
-  let watchInterval = null;
-  function watchReload() {
-    clearInterval(watchInterval);
-    // Chequeamos cada 2s si el iframe volvió a disparar onload de nuevo
-    // (cross-origin: no podemos leer la URL, pero sí escuchar el evento load de nuevo)
-    // Se setea en el propio onload, así que cada vez que el iframe carga de nuevo
-    // se ejecuta onload otra vez → si ya estamos logueados y el script recargó = salida
-    let loadCount = 0;
-    const originalOnLoad = app.onload;
-    app.onload = function() {
-      loadCount++;
-      if (loadCount > 0) {
-        // El script recargó (usuario dio Salir) → re-lanzar el mismo perfil desde cero
-        clearTimeout(loadTimer);
-        app.classList.remove('show');
-        mostrarLoader('Reiniciando sesión...');
-        setTimeout(() => {
-          app.src = URLS[current];
-          loadTimer = setTimeout(() => {
-            ocultarLoader();
-            app.classList.add('show');
-          }, 5000);
-          app.onload = function() {
-            clearTimeout(loadTimer);
-            ocultarLoader();
-            app.classList.add('show');
-            watchReload();
-          };
-        }, 800);
-      }
-    };
   }
 </script>
 
@@ -390,9 +383,7 @@
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const SPACING = 28;
-  let dots = [];
-  let mouse = {x:-9999, y:-9999};
-  let time = 0;
+  let dots = [], mouse = {x:-9999,y:-9999}, time = 0;
   const panel = canvas.parentElement;
   panel.addEventListener('mousemove', e => {
     const r = canvas.getBoundingClientRect();
@@ -401,27 +392,23 @@
   panel.addEventListener('mouseleave', () => { mouse.x=-9999; mouse.y=-9999; });
   function resize(){
     canvas.width = panel.offsetWidth; canvas.height = panel.offsetHeight;
-    const cols = Math.ceil(canvas.width/SPACING)+1;
-    const rows = Math.ceil(canvas.height/SPACING)+1;
-    dots = [];
-    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) dots.push({ox:c*SPACING, oy:r*SPACING});
+    const cols=Math.ceil(canvas.width/SPACING)+1, rows=Math.ceil(canvas.height/SPACING)+1;
+    dots=[];
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) dots.push({ox:c*SPACING,oy:r*SPACING});
   }
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height); time+=.018;
-    for(let i=0;i<dots.length;i++){
-      const d=dots[i];
+    dots.forEach(d=>{
       const wave=Math.sin(d.ox*.011+d.oy*.007+time*.9)*6;
       let x=d.ox+wave, y=d.oy+wave*.5;
-      const dx=x-mouse.x, dy=y-mouse.y;
-      const dist=Math.sqrt(dx*dx+dy*dy);
+      const dx=x-mouse.x, dy=y-mouse.y, dist=Math.sqrt(dx*dx+dy*dy);
       if(dist<120){ const f=(1-dist/120)*40; x+=(dx/dist)*f; y+=(dy/dist)*f; }
       const prox=Math.max(0,1-dist/120);
       const alpha=.18+.12*Math.sin(d.ox*.04+d.oy*.03+time*.7)+prox*.7;
-      const rad=1.6+prox*3.5;
-      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2);
+      ctx.beginPath(); ctx.arc(x,y,1.6+prox*3.5,0,Math.PI*2);
       ctx.fillStyle=`rgba(${Math.round(180+prox*75)},${Math.round(200+prox*55)},255,${alpha})`;
       ctx.fill();
-    }
+    });
     requestAnimationFrame(draw);
   }
   window.addEventListener('resize',resize); resize(); draw();
