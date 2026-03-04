@@ -4,203 +4,308 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ISIS API</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body,html{height:100%;width:100%;overflow:hidden;background:#eef4ff;font-family:system-ui,sans-serif;}
+  :root { --blue: #0047ff; --dark: #001a4d; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; width:100%; overflow:hidden; font-family:'Plus Jakarta Sans',sans-serif; background:#f0f4ff; }
 
-  #splash{
-    position:fixed;inset:0;z-index:9999;background:#eef4ff;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    transition:opacity .55s ease;
+  /* ── MENÚ ── */
+  #menu {
+    position:fixed; inset:0; z-index:200;
+    display:flex;
+    background:#f0f4ff;
+    transition:opacity .4s ease, transform .4s ease;
   }
-  #splash.hide{opacity:0;pointer-events:none;}
-  #splash::before{
-    content:'';position:absolute;inset:0;
-    background-image:radial-gradient(circle,#bfdbfe 1px,transparent 1px);
-    background-size:28px 28px;opacity:.35;
+  #menu.hide { opacity:0; transform:scale(1.03); pointer-events:none; }
+
+  /* lado izquierdo: card de acceso */
+  .menu-left {
+    width:460px; min-width:360px;
+    background:#fff;
+    display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
+    padding:60px 64px;
+    position:relative; z-index:2;
   }
 
-  .inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
-
-  .bot-wrap{
-    animation:float 2.4s ease-in-out infinite;
-    filter:drop-shadow(0 14px 20px rgba(0,71,255,.18));
+  .menu-logo {
+    display:flex; align-items:center; gap:12px; margin-bottom:44px;
   }
-  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-13px);}}
-
-  .bot-gnd{
-    width:60px;height:9px;border-radius:50%;
-    background:rgba(0,71,255,.12);margin:2px auto 16px;
-    animation:gnd 2.4s ease-in-out infinite;
+  .menu-logo-icon {
+    background:var(--blue); width:40px; height:40px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:17px;
   }
-  @keyframes gnd{0%,100%{transform:scaleX(1);opacity:.5;}50%{transform:scaleX(.5);opacity:.15;}}
+  .menu-logo span { font-weight:900; font-size:20px; color:var(--dark); letter-spacing:-.5px; }
 
-  .r-eye-l{animation:blink 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-  .r-eye-r{animation:blink 3s ease-in-out infinite .1s;transform-box:fill-box;transform-origin:center;}
-  @keyframes blink{0%,84%,100%{transform:scaleY(1);}89%{transform:scaleY(.05);}}
+  .menu-headline { font-size:26px; font-weight:800; color:var(--dark); margin-bottom:8px; line-height:1.2; }
+  .menu-sub { font-size:13px; color:#64748b; font-weight:500; line-height:1.6; margin-bottom:36px; }
 
-  .r-arm-l{animation:armL 2s ease-in-out infinite;transform-box:fill-box;transform-origin:90% 10%;}
-  .r-arm-r{animation:armR 2s ease-in-out infinite;transform-box:fill-box;transform-origin:10% 10%;}
-  @keyframes armL{0%,100%{transform:rotate(0);}40%{transform:rotate(12deg);}}
-  @keyframes armR{0%,100%{transform:rotate(0);}40%{transform:rotate(-22deg);}70%{transform:rotate(6deg);}}
+  /* tarjetas de perfil */
+  .profile-cards { display:flex; flex-direction:column; gap:12px; width:100%; }
 
-  .r-ant{animation:antLED 1s ease-in-out infinite;}
-  @keyframes antLED{0%,100%{opacity:1;}50%{opacity:.08;}}
+  .profile-card {
+    display:flex; align-items:center; gap:16px;
+    padding:18px 20px; border-radius:14px; cursor:pointer;
+    border:1.5px solid #e2e8f0; background:#f8fafc;
+    transition:all .2s ease; text-decoration:none; color:inherit;
+  }
+  .profile-card:hover { border-color:var(--blue); background:#fff; box-shadow:0 6px 20px rgba(0,71,255,.1); transform:translateX(4px); }
 
-  .r-led1{animation:led 1.3s ease-in-out infinite;}
-  .r-led2{animation:led 1.3s ease-in-out infinite .35s;}
-  .r-led3{animation:led 1.3s ease-in-out infinite .7s;}
-  @keyframes led{0%,100%{opacity:1;}50%{opacity:.18;}}
+  .profile-card-icon {
+    width:44px; height:44px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; flex-shrink:0;
+  }
+  .profile-card-icon.admin { background:#eff6ff; color:var(--blue); }
+  .profile-card-icon.user  { background:#f0fdf4; color:#10b981; }
 
-  .r-scan{animation:scan 2s linear infinite;}
-  @keyframes scan{0%{transform:translateY(-20px);opacity:0;}20%{opacity:.5;}80%{opacity:.5;}100%{transform:translateY(20px);opacity:0;}}
+  .profile-card-info { flex:1; }
+  .profile-card-title { font-size:14px; font-weight:800; color:var(--dark); margin-bottom:2px; }
+  .profile-card-desc  { font-size:11px; font-weight:600; color:#94a3b8; }
 
-  .sp-title{font-size:20px;font-weight:900;color:#001a4d;letter-spacing:-.3px;margin-bottom:3px;}
-  .sp-sub{font-size:9px;font-weight:800;color:#0047ff;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:18px;}
+  .profile-card-arrow { color:#cbd5e1; font-size:13px; transition:color .2s, transform .2s; }
+  .profile-card:hover .profile-card-arrow { color:var(--blue); transform:translateX(3px); }
 
-  .dots{display:flex;gap:7px;}
-  .dots span{width:8px;height:8px;border-radius:50%;background:#0047ff;animation:db 1.1s ease-in-out infinite;}
-  .dots span:nth-child(2){animation-delay:.18s;background:#60a5fa;}
-  .dots span:nth-child(3){animation-delay:.36s;background:#bfdbfe;}
-  @keyframes db{0%,100%{transform:translateY(0);opacity:.6;}50%{transform:translateY(-7px);opacity:1;}}
+  /* lado derecho: fondo animado igual al script admin */
+  .menu-right {
+    flex:1; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, #001a4d 0%, #0047ff 60%, #0ea5e9 100%);
+  }
+  #dot-canvas { position:absolute; inset:0; width:100%; height:100%; }
 
-  iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;opacity:0;transition:opacity .5s ease;}
-  iframe.show{opacity:1;}
+  .deco-card {
+    position:relative; z-index:2;
+    background:rgba(255,255,255,.08); backdrop-filter:blur(24px);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:28px; padding:40px 45px; text-align:center;
+    box-shadow:0 30px 80px rgba(0,0,0,.35); min-width:230px;
+  }
+  .deco-card-icon { font-size:44px; color:#fff; margin-bottom:16px; }
+  .deco-card-title { font-size:22px; font-weight:900; color:#fff; margin:0 0 6px; }
+  .deco-card-sub { font-size:11px; color:rgba(255,255,255,.6); font-weight:600; text-transform:uppercase; letter-spacing:1.2px; }
+  .deco-pill {
+    display:inline-flex; align-items:center; gap:7px; margin-top:22px;
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+    border-radius:30px; padding:8px 18px; font-size:11px; color:rgba(255,255,255,.85); font-weight:700;
+  }
+  .deco-pill-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; animation:blink 1.4s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
+
+  @media(max-width:700px) {
+    .menu-right { display:none; }
+    .menu-left  { width:100%; padding:48px 28px; }
+  }
+
+  /* ── IFRAME ── */
+  #app {
+    position:fixed; inset:0; z-index:50;
+    border:none; width:100%; height:100%;
+    opacity:0; pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  #app.show { opacity:1; pointer-events:all; }
+
+  /* ── TOGGLE FLOTANTE ── */
+  #toggle {
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    z-index:9999;
+    background:#fff; border-radius:100px; padding:4px;
+    box-shadow:0 4px 24px rgba(0,71,255,.18);
+    border:1.5px solid rgba(0,71,255,.12);
+    display:none; gap:0;
+    align-items:center;
+  }
+  #toggle.visible { display:flex; }
+
+  .toggle-btn {
+    display:flex; align-items:center; gap:7px;
+    padding:9px 20px; border-radius:100px; border:none;
+    background:transparent; font-family:inherit;
+    font-size:12px; font-weight:800; color:#7a90b0; cursor:pointer;
+    transition:all .22s ease; white-space:nowrap;
+  }
+  .toggle-btn i { font-size:12px; }
+  .toggle-btn.active { background:var(--blue); color:#fff; box-shadow:0 3px 12px rgba(0,71,255,.35); }
+
+  /* botón volver */
+  #back {
+    position:fixed; top:14px; left:14px; z-index:9999;
+    display:none; align-items:center; gap:7px;
+    background:#fff; border:1.5px solid rgba(0,71,255,.15);
+    border-radius:10px; padding:8px 14px;
+    font-family:inherit; font-size:12px; font-weight:800;
+    color:var(--blue); cursor:pointer;
+    box-shadow:0 2px 10px rgba(0,71,255,.1);
+    transition:all .2s ease;
+  }
+  #back.visible { display:flex; }
+  #back:hover { background:var(--blue); color:#fff; }
 </style>
 </head>
 <body>
 
-<div id="splash">
-  <div class="inner">
-    <div class="bot-wrap">
-      <svg width="148" height="192" viewBox="0 0 148 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-        <!-- ANTENA -->
-        <rect x="69" y="2" width="10" height="18" rx="5" fill="#93c5fd"/>
-        <circle class="r-ant" cx="74" cy="2" r="6" fill="#0047ff"/>
-        <circle cx="74" cy="2" r="10" fill="#0047ff" fill-opacity=".1"/>
-        <circle cx="74" cy="2" r="2.5" fill="white" fill-opacity=".7"/>
-
-        <!-- CABEZA cuadrada -->
-        <rect x="18" y="18" width="112" height="74" rx="16" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
-        <rect x="18" y="18" width="112" height="22" rx="16" fill="#eff6ff"/>
-        <rect x="18" y="32" width="112" height="8" fill="#eff6ff"/>
-
-        <!-- VISOR -->
-        <rect x="27" y="28" width="94" height="52" rx="10" fill="#0f172a"/>
-        <clipPath id="vc"><rect x="27" y="28" width="94" height="52" rx="10"/></clipPath>
-        <g clip-path="url(#vc)">
-          <rect class="r-scan" x="27" y="28" width="94" height="5" rx="2" fill="#0047ff" fill-opacity=".4"/>
-        </g>
-        <rect x="31" y="31" width="22" height="5" rx="2.5" fill="white" fill-opacity=".1"/>
-
-        <!-- OJO IZQ -->
-        <g class="r-eye-l">
-          <rect x="36" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
-          <rect x="41" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
-          <circle cx="44" cy="46" r="4" fill="white" fill-opacity=".9"/>
-          <circle cx="55" cy="53" r="1.5" fill="white" fill-opacity=".6"/>
-        </g>
-
-        <!-- OJO DER -->
-        <g class="r-eye-r">
-          <rect x="84" y="38" width="28" height="26" rx="7" fill="#0047ff"/>
-          <rect x="89" y="43" width="18" height="16" rx="5" fill="#60a5fa"/>
-          <circle cx="92" cy="46" r="4" fill="white" fill-opacity=".9"/>
-          <circle cx="103" cy="53" r="1.5" fill="white" fill-opacity=".6"/>
-        </g>
-
-        <!-- BOCA SONRIENTE (modificada) -->
-        <path d="M54 68 Q74 80, 94 68" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-        <!-- TORNILLOS cabeza -->
-        <circle cx="26" cy="26" r="4" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1.2"/>
-        <line x1="24" y1="24" x2="28" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
-        <line x1="28" y1="24" x2="24" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
-        <circle cx="122" cy="26" r="4" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1.2"/>
-        <line x1="120" y1="24" x2="124" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
-        <line x1="124" y1="24" x2="120" y2="28" stroke="#93c5fd" stroke-width="1.2"/>
-
-        <!-- CUELLO -->
-        <rect x="58" y="91" width="32" height="10" rx="5" fill="#dbeafe"/>
-        <rect x="63" y="98" width="22" height="6" rx="3" fill="#bfdbfe"/>
-
-        <!-- CUERPO -->
-        <rect x="24" y="99" width="100" height="68" rx="14" fill="white" stroke="#dbeafe" stroke-width="2.5"/>
-        <rect x="24" y="99" width="100" height="20" rx="14" fill="#eff6ff"/>
-        <rect x="24" y="111" width="100" height="8" fill="#eff6ff"/>
-
-        <!-- PANEL PECHO -->
-        <rect x="38" y="112" width="72" height="42" rx="9" fill="#f8faff" stroke="#dbeafe" stroke-width="1.5"/>
-        <circle class="r-led1" cx="57" cy="126" r="5.5" fill="#0047ff"/>
-        <circle class="r-led2" cx="74" cy="126" r="5.5" fill="#3b82f6"/>
-        <circle class="r-led3" cx="91" cy="126" r="5.5" fill="#93c5fd"/>
-        <rect x="46" y="136" width="56" height="4" rx="2" fill="#dbeafe"/>
-        <rect x="46" y="144" width="38" height="4" rx="2" fill="#eff6ff"/>
-        <rect x="87" y="144" width="15" height="4" rx="2" fill="#0047ff" fill-opacity=".35"/>
-
-        <!-- TORNILLOS cuerpo -->
-        <circle cx="32" cy="107" r="3.5" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/>
-        <line x1="30" y1="105" x2="34" y2="109" stroke="#93c5fd" stroke-width="1"/>
-        <line x1="34" y1="105" x2="30" y2="109" stroke="#93c5fd" stroke-width="1"/>
-        <circle cx="116" cy="107" r="3.5" fill="#dbeafe" stroke="#bfdbfe" stroke-width="1"/>
-        <line x1="114" y1="105" x2="118" y2="109" stroke="#93c5fd" stroke-width="1"/>
-        <line x1="118" y1="105" x2="114" y2="109" stroke="#93c5fd" stroke-width="1"/>
-
-        <!-- BRAZO IZQ corto cuadrado -->
-        <g class="r-arm-l">
-          <rect x="2" y="102" width="24" height="34" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
-          <rect x="0" y="132" width="26" height="18" rx="7" fill="#dbeafe"/>
-          <rect x="4" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
-          <rect x="11" y="147" width="5" height="8" rx="2.5" fill="#bfdbfe"/>
-          <rect x="18" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
-        </g>
-
-        <!-- BRAZO DER wave -->
-        <g class="r-arm-r">
-          <rect x="122" y="102" width="24" height="34" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
-          <rect x="122" y="132" width="26" height="18" rx="7" fill="#dbeafe"/>
-          <rect x="124" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
-          <rect x="131" y="147" width="5" height="8" rx="2.5" fill="#bfdbfe"/>
-          <rect x="138" y="147" width="5" height="6" rx="2.5" fill="#bfdbfe"/>
-        </g>
-
-        <!-- PIERNAS cortas -->
-        <rect x="40" y="164" width="26" height="24" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
-        <rect x="82" y="164" width="26" height="24" rx="9" fill="white" stroke="#dbeafe" stroke-width="2"/>
-
-        <!-- PIES cuadrados -->
-        <rect x="32" y="182" width="40" height="14" rx="6" fill="#dbeafe"/>
-        <rect x="76" y="182" width="40" height="14" rx="6" fill="#dbeafe"/>
-        <rect x="36" y="186" width="10" height="6" rx="3" fill="#bfdbfe"/>
-        <rect x="80" y="186" width="10" height="6" rx="3" fill="#bfdbfe"/>
-
-      </svg>
+<!-- ── MENÚ PRINCIPAL ── -->
+<div id="menu">
+  <div class="menu-left">
+    <div class="menu-logo">
+      <div class="menu-logo-icon"><i class="fa-solid fa-eye"></i></div>
+      <span>ISIS API</span>
     </div>
 
-    <div class="bot-gnd"></div>
-    <div class="sp-title">ISIS API</div>
-    <div class="sp-sub">Cargando sistema...</div>
-    <div class="dots"><span></span><span></span><span></span></div>
+    <h1 class="menu-headline">Selecciona tu<br>tipo de acceso</h1>
+    <p class="menu-sub">Elige el perfil que corresponde a tu rol<br>dentro del sistema ISIS para continuar.</p>
+
+    <div class="profile-cards">
+      <!-- ADMIN -->
+      <div class="profile-card" onclick="entrar('admin')">
+        <div class="profile-card-icon admin">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="profile-card-info">
+          <div class="profile-card-title">Administrador</div>
+          <div class="profile-card-desc">Acceso completo · Token requerido</div>
+        </div>
+        <i class="fa-solid fa-chevron-right profile-card-arrow"></i>
+      </div>
+
+      <!-- USUARIO -->
+      <div class="profile-card" onclick="entrar('user')">
+        <div class="profile-card-icon user">
+          <i class="fa-solid fa-circle-user"></i>
+        </div>
+        <div class="profile-card-info">
+          <div class="profile-card-title">Usuario</div>
+          <div class="profile-card-desc">Verificación de correo · Acceso estándar</div>
+        </div>
+        <i class="fa-solid fa-chevron-right profile-card-arrow"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-right">
+    <canvas id="dot-canvas"></canvas>
+    <div class="deco-card">
+      <div class="deco-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="deco-card-title">ISIS API</div>
+      <div class="deco-card-sub">Security Management Gateway</div>
+      <div class="deco-pill">
+        <span class="deco-pill-dot"></span> Sistema Activo
+      </div>
+    </div>
   </div>
 </div>
 
-<iframe
-  id="app"
-  src="https://script.google.com/macros/s/AKfycbxz7psCJDD8hurA7U_CJ6ifWRpMTuhxzoNveWshkMmN0sHLIc9C9qXsvlvJRqq61MtF/exec"
-  allow="camera; microphone; geolocation">
-</iframe>
+<!-- ── IFRAME ── -->
+<iframe id="app" allow="camera; microphone; geolocation"></iframe>
+
+<!-- ── BOTÓN VOLVER ── -->
+<button id="back" onclick="volver()">
+  <i class="fa-solid fa-arrow-left"></i> Cambiar perfil
+</button>
+
+<!-- ── TOGGLE FLOTANTE (visible sólo dentro del iframe) ── -->
+<div id="toggle">
+  <button class="toggle-btn active" id="btn-admin" onclick="cambiar('admin')">
+    <i class="fa-solid fa-shield-halved"></i> Admin
+  </button>
+  <button class="toggle-btn" id="btn-user" onclick="cambiar('user')">
+    <i class="fa-solid fa-circle-user"></i> Usuario
+  </button>
+</div>
 
 <script>
-  const fr = document.getElementById('app');
-  const sp = document.getElementById('splash');
-  function done(){
-    fr.classList.add('show');
-    sp.classList.add('hide');
-    setTimeout(()=>{ sp.style.display='none'; }, 600);
+  const URLS = {
+    admin: 'https://script.google.com/macros/s/AKfycbxz7psCJDD8hurA7U_CJ6ifWRpMTuhxzoNveWshkMmN0sHLIc9C9qXsvlvJRqq61MtF/exec',
+    user:  'https://script.google.com/macros/s/AKfycbz9B_2CVhFTrv7ONBqJN8esYpFw8m9pxGuemNm8XAfVi80ZBQnZCvHfjqqaD6hX0fdjgw/exec'
+  };
+
+  let current = null;
+  const menu   = document.getElementById('menu');
+  const app    = document.getElementById('app');
+  const toggle = document.getElementById('toggle');
+  const back   = document.getElementById('back');
+
+  function entrar(mode) {
+    current = mode;
+    menu.classList.add('hide');
+    app.src = URLS[mode];
+    app.onload = () => { app.classList.add('show'); };
+    setTimeout(() => {
+      toggle.classList.add('visible');
+      back.classList.add('visible');
+      document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
+      document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
+    }, 500);
   }
-  fr.addEventListener('load', ()=> setTimeout(done, 500));
-  setTimeout(()=>{ if(!fr.classList.contains('show')) done(); }, 10000);
+
+  function cambiar(mode) {
+    if (mode === current) return;
+    current = mode;
+    app.classList.remove('show');
+    document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
+    document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
+    setTimeout(() => {
+      app.src = URLS[mode];
+      app.onload = () => setTimeout(() => app.classList.add('show'), 200);
+    }, 300);
+  }
+
+  function volver() {
+    app.classList.remove('show');
+    toggle.classList.remove('visible');
+    back.classList.remove('visible');
+    setTimeout(() => {
+      app.src = '';
+      current = null;
+      menu.classList.remove('hide');
+    }, 400);
+  }
+</script>
+
+<!-- canvas animado fondo derecho -->
+<script>
+(function(){
+  const canvas = document.getElementById('dot-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const SPACING = 28;
+  let cols, rows, dots = [];
+  let mouse = {x:-9999, y:-9999};
+  let time = 0;
+  const panel = canvas.parentElement;
+  panel.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  panel.addEventListener('mouseleave', () => { mouse.x=-9999; mouse.y=-9999; });
+  function resize(){
+    canvas.width = panel.offsetWidth; canvas.height = panel.offsetHeight;
+    cols = Math.ceil(canvas.width/SPACING)+1; rows = Math.ceil(canvas.height/SPACING)+1;
+    dots = [];
+    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) dots.push({ox:c*SPACING, oy:r*SPACING});
+  }
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height); time+=.018;
+    for(let i=0;i<dots.length;i++){
+      const d = dots[i];
+      const wave = Math.sin(d.ox*.06*.18 + d.oy*.04*.18 + time*.9)*6;
+      let x=d.ox+wave, y=d.oy+wave*.5;
+      const dx=x-mouse.x, dy=y-mouse.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<120){ const f=(1-dist/120)*40; x+=(dx/dist)*f; y+=(dy/dist)*f; }
+      const prox=Math.max(0,1-dist/120);
+      const alpha=.18+.12*Math.sin(d.ox*.04+d.oy*.03+time*.7)+prox*.7;
+      const rad=1.6+prox*3.5;
+      ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${Math.round(180+prox*75)},${Math.round(200+prox*55)},255,${alpha})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize); resize(); draw();
+})();
 </script>
 </body>
 </html>
