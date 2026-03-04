@@ -7,30 +7,31 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --blue: #0047ff; --dark: #001a4d; }
+  :root { --blue:#0047ff; --dark:#001a4d; }
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
   html, body { height:100%; width:100%; overflow:hidden; font-family:'Plus Jakarta Sans',sans-serif; background:#f0f4ff; }
 
-  /* ── MENÚ ── */
+  /* ══════════════════════════════════════
+     MENÚ
+  ══════════════════════════════════════ */
   #menu {
     position:fixed; inset:0; z-index:200;
     display:flex;
-    background:#f0f4ff;
     transition:opacity .4s ease, transform .4s ease;
   }
-  #menu.hide { opacity:0; transform:scale(1.03); pointer-events:none; }
+  #menu.hide { opacity:0; transform:scale(1.02); pointer-events:none; }
 
-  /* lado izquierdo: card de acceso */
+  /* panel blanco */
   .menu-left {
-    width:460px; min-width:360px;
+    width:420px; min-width:340px;
     background:#fff;
     display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
-    padding:60px 64px;
+    padding:56px 60px;
     position:relative; z-index:2;
   }
 
   .menu-logo {
-    display:flex; align-items:center; gap:12px; margin-bottom:44px;
+    display:flex; align-items:center; gap:12px; margin-bottom:40px;
   }
   .menu-logo-icon {
     background:var(--blue); width:40px; height:40px; border-radius:10px;
@@ -39,47 +40,46 @@
   .menu-logo span { font-weight:900; font-size:20px; color:var(--dark); letter-spacing:-.5px; }
 
   .menu-headline { font-size:26px; font-weight:800; color:var(--dark); margin-bottom:8px; line-height:1.2; }
-  .menu-sub { font-size:13px; color:#64748b; font-weight:500; line-height:1.6; margin-bottom:36px; }
+  .menu-sub { font-size:13px; color:#64748b; font-weight:500; line-height:1.6; margin-bottom:32px; }
 
   /* tarjetas de perfil */
-  .profile-cards { display:flex; flex-direction:column; gap:12px; width:100%; }
+  .profile-cards { display:flex; flex-direction:column; gap:10px; width:100%; }
 
   .profile-card {
-    display:flex; align-items:center; gap:16px;
-    padding:18px 20px; border-radius:14px; cursor:pointer;
+    display:flex; align-items:center; gap:14px;
+    padding:16px 18px; border-radius:12px; cursor:pointer;
     border:1.5px solid #e2e8f0; background:#f8fafc;
-    transition:all .2s ease; text-decoration:none; color:inherit;
+    transition:all .2s ease;
   }
-  .profile-card:hover { border-color:var(--blue); background:#fff; box-shadow:0 6px 20px rgba(0,71,255,.1); transform:translateX(4px); }
-
+  .profile-card:hover {
+    border-color:var(--blue); background:#fff;
+    box-shadow:0 6px 20px rgba(0,71,255,.1); transform:translateX(4px);
+  }
   .profile-card-icon {
-    width:44px; height:44px; border-radius:12px;
+    width:42px; height:42px; border-radius:10px;
     display:flex; align-items:center; justify-content:center;
-    font-size:18px; flex-shrink:0;
+    font-size:17px; flex-shrink:0;
   }
   .profile-card-icon.admin { background:#eff6ff; color:var(--blue); }
   .profile-card-icon.user  { background:#f0fdf4; color:#10b981; }
-
   .profile-card-info { flex:1; }
   .profile-card-title { font-size:14px; font-weight:800; color:var(--dark); margin-bottom:2px; }
   .profile-card-desc  { font-size:11px; font-weight:600; color:#94a3b8; }
-
-  .profile-card-arrow { color:#cbd5e1; font-size:13px; transition:color .2s, transform .2s; }
+  .profile-card-arrow { color:#cbd5e1; font-size:12px; transition:color .2s, transform .2s; }
   .profile-card:hover .profile-card-arrow { color:var(--blue); transform:translateX(3px); }
 
-  /* lado derecho: fondo animado igual al script admin */
+  /* panel azul */
   .menu-right {
     flex:1; position:relative; overflow:hidden;
     display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg, #001a4d 0%, #0047ff 60%, #0ea5e9 100%);
+    background:linear-gradient(135deg,#001a4d 0%,#0047ff 60%,#0ea5e9 100%);
   }
   #dot-canvas { position:absolute; inset:0; width:100%; height:100%; }
-
   .deco-card {
     position:relative; z-index:2;
     background:rgba(255,255,255,.08); backdrop-filter:blur(24px);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:28px; padding:40px 45px; text-align:center;
+    border:1px solid rgba(255,255,255,.18); border-radius:28px;
+    padding:40px 45px; text-align:center;
     box-shadow:0 30px 80px rgba(0,0,0,.35); min-width:230px;
   }
   .deco-card-icon { font-size:44px; color:#fff; margin-bottom:16px; }
@@ -93,88 +93,116 @@
   .deco-pill-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; animation:blink 1.4s ease-in-out infinite; }
   @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
 
-  @media(max-width:700px) {
+  @media(max-width:680px){
     .menu-right { display:none; }
-    .menu-left  { width:100%; padding:48px 28px; }
+    .menu-left  { width:100%; padding:44px 28px; }
   }
 
-  /* ── IFRAME ── */
+  /* ══════════════════════════════════════
+     LOADER (pantalla de carga entre scripts)
+  ══════════════════════════════════════ */
+  #loader {
+    position:fixed; inset:0; z-index:150;
+    background:#f0f4ff;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:16px;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  #loader.show { opacity:1; pointer-events:all; }
+  .loader-spinner {
+    width:44px; height:44px; border-radius:50%;
+    border:3px solid #dbeafe;
+    border-top-color:var(--blue);
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .loader-text { font-size:13px; font-weight:700; color:#64748b; }
+
+  /* ══════════════════════════════════════
+     IFRAME
+  ══════════════════════════════════════ */
   #app {
-    position:fixed; inset:0; z-index:50;
+    position:fixed; inset:0; z-index:100;
     border:none; width:100%; height:100%;
     opacity:0; pointer-events:none;
-    transition:opacity .4s ease;
+    transition:opacity .35s ease;
   }
   #app.show { opacity:1; pointer-events:all; }
 
-  /* ── TOGGLE FLOTANTE ── */
-  #toggle {
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
-    z-index:9999;
-    background:#fff; border-radius:100px; padding:4px;
-    box-shadow:0 4px 24px rgba(0,71,255,.18);
-    border:1.5px solid rgba(0,71,255,.12);
-    display:none; gap:0;
-    align-items:center;
+  /* ══════════════════════════════════════
+     PANEL SUPERIOR (toggle + volver)
+     solo visible dentro del iframe
+  ══════════════════════════════════════ */
+  #topbar {
+    position:fixed; top:0; left:0; right:0; z-index:9999;
+    height:52px;
+    background:#fff;
+    border-bottom:1px solid #e2e8f0;
+    display:none; align-items:center; justify-content:space-between;
+    padding:0 20px;
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
   }
-  #toggle.visible { display:flex; }
+  #topbar.visible { display:flex; }
 
-  .toggle-btn {
-    display:flex; align-items:center; gap:7px;
-    padding:9px 20px; border-radius:100px; border:none;
+  .topbar-logo { display:flex; align-items:center; gap:9px; }
+  .topbar-logo-icon {
+    background:var(--blue); width:30px; height:30px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px;
+  }
+  .topbar-logo span { font-weight:900; font-size:15px; color:var(--dark); letter-spacing:-.3px; }
+
+  /* toggle dentro del topbar */
+  .topbar-toggle {
+    display:flex; background:#f1f5f9; border-radius:100px; padding:3px; gap:0;
+  }
+  .ttoggle-btn {
+    display:flex; align-items:center; gap:6px;
+    padding:7px 18px; border-radius:100px; border:none;
     background:transparent; font-family:inherit;
     font-size:12px; font-weight:800; color:#7a90b0; cursor:pointer;
-    transition:all .22s ease; white-space:nowrap;
+    transition:all .22s ease;
   }
-  .toggle-btn i { font-size:12px; }
-  .toggle-btn.active { background:var(--blue); color:#fff; box-shadow:0 3px 12px rgba(0,71,255,.35); }
+  .ttoggle-btn i { font-size:11px; }
+  .ttoggle-btn.active { background:var(--blue); color:#fff; box-shadow:0 3px 10px rgba(0,71,255,.3); }
 
-  /* botón volver */
-  #back {
-    position:fixed; top:14px; left:14px; z-index:9999;
-    display:none; align-items:center; gap:7px;
-    background:#fff; border:1.5px solid rgba(0,71,255,.15);
-    border-radius:10px; padding:8px 14px;
+  .topbar-back {
+    display:flex; align-items:center; gap:7px;
+    background:transparent; border:1.5px solid #e2e8f0;
+    border-radius:9px; padding:7px 14px;
     font-family:inherit; font-size:12px; font-weight:800;
-    color:var(--blue); cursor:pointer;
-    box-shadow:0 2px 10px rgba(0,71,255,.1);
+    color:#64748b; cursor:pointer;
     transition:all .2s ease;
   }
-  #back.visible { display:flex; }
-  #back:hover { background:var(--blue); color:#fff; }
+  .topbar-back:hover { border-color:var(--blue); color:var(--blue); }
+
+  /* cuando el topbar está visible, el iframe baja para no quedar tapado */
+  #app.with-bar { top:52px; height:calc(100% - 52px); }
 </style>
 </head>
 <body>
 
-<!-- ── MENÚ PRINCIPAL ── -->
+<!-- ══ MENÚ ══ -->
 <div id="menu">
   <div class="menu-left">
     <div class="menu-logo">
       <div class="menu-logo-icon"><i class="fa-solid fa-eye"></i></div>
       <span>ISIS API</span>
     </div>
-
-    <h1 class="menu-headline">Selecciona tu<br>tipo de acceso</h1>
-    <p class="menu-sub">Elige el perfil que corresponde a tu rol<br>dentro del sistema ISIS para continuar.</p>
+    <h1 class="menu-headline">Acceso Seguro<br>al Gateway</h1>
+    <p class="menu-sub">Selecciona tu perfil para continuar<br>dentro del ecosistema ISIS.</p>
 
     <div class="profile-cards">
-      <!-- ADMIN -->
       <div class="profile-card" onclick="entrar('admin')">
-        <div class="profile-card-icon admin">
-          <i class="fa-solid fa-shield-halved"></i>
-        </div>
+        <div class="profile-card-icon admin"><i class="fa-solid fa-shield-halved"></i></div>
         <div class="profile-card-info">
           <div class="profile-card-title">Administrador</div>
           <div class="profile-card-desc">Acceso completo · Token requerido</div>
         </div>
         <i class="fa-solid fa-chevron-right profile-card-arrow"></i>
       </div>
-
-      <!-- USUARIO -->
       <div class="profile-card" onclick="entrar('user')">
-        <div class="profile-card-icon user">
-          <i class="fa-solid fa-circle-user"></i>
-        </div>
+        <div class="profile-card-icon user"><i class="fa-solid fa-circle-user"></i></div>
         <div class="profile-card-info">
           <div class="profile-card-title">Usuario</div>
           <div class="profile-card-desc">Verificación de correo · Acceso estándar</div>
@@ -190,30 +218,40 @@
       <div class="deco-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <div class="deco-card-title">ISIS API</div>
       <div class="deco-card-sub">Security Management Gateway</div>
-      <div class="deco-pill">
-        <span class="deco-pill-dot"></span> Sistema Activo
-      </div>
+      <div class="deco-pill"><span class="deco-pill-dot"></span> Sistema Activo</div>
     </div>
   </div>
 </div>
 
-<!-- ── IFRAME ── -->
-<iframe id="app" allow="camera; microphone; geolocation"></iframe>
+<!-- ══ LOADER ══ -->
+<div id="loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text" id="loader-text">Cargando...</div>
+</div>
 
-<!-- ── BOTÓN VOLVER ── -->
-<button id="back" onclick="volver()">
-  <i class="fa-solid fa-arrow-left"></i> Cambiar perfil
-</button>
+<!-- ══ TOPBAR (toggle + volver) ══ -->
+<div id="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-icon"><i class="fa-solid fa-eye"></i></div>
+    <span>ISIS API</span>
+  </div>
 
-<!-- ── TOGGLE FLOTANTE (visible sólo dentro del iframe) ── -->
-<div id="toggle">
-  <button class="toggle-btn active" id="btn-admin" onclick="cambiar('admin')">
-    <i class="fa-solid fa-shield-halved"></i> Admin
-  </button>
-  <button class="toggle-btn" id="btn-user" onclick="cambiar('user')">
-    <i class="fa-solid fa-circle-user"></i> Usuario
+  <div class="topbar-toggle">
+    <button class="ttoggle-btn" id="btn-admin" onclick="cambiar('admin')">
+      <i class="fa-solid fa-shield-halved"></i> Admin
+    </button>
+    <button class="ttoggle-btn" id="btn-user" onclick="cambiar('user')">
+      <i class="fa-solid fa-circle-user"></i> Usuario
+    </button>
+  </div>
+
+  <button class="topbar-back" onclick="volver()">
+    <i class="fa-solid fa-arrow-left"></i> Cambiar perfil
   </button>
 </div>
+
+<!-- ══ IFRAME ══ -->
+<iframe id="app" allow="camera; microphone; geolocation"></iframe>
 
 <script>
   const URLS = {
@@ -222,56 +260,137 @@
   };
 
   let current = null;
+  let loadTimer = null;
   const menu   = document.getElementById('menu');
   const app    = document.getElementById('app');
-  const toggle = document.getElementById('toggle');
-  const back   = document.getElementById('back');
+  const loader = document.getElementById('loader');
+  const topbar = document.getElementById('topbar');
+
+  function mostrarLoader(texto) {
+    document.getElementById('loader-text').textContent = texto || 'Cargando...';
+    loader.classList.add('show');
+  }
+  function ocultarLoader() { loader.classList.remove('show'); }
+
+  function setToggleActivo(mode) {
+    document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
+    document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
+  }
 
   function entrar(mode) {
     current = mode;
+    // esconder menu
     menu.classList.add('hide');
+    mostrarLoader(mode === 'admin' ? 'Cargando panel Admin...' : 'Cargando portal Usuario...');
+
+    app.classList.remove('show');
+    app.classList.add('with-bar');
     app.src = URLS[mode];
-    app.onload = () => { app.classList.add('show'); };
-    setTimeout(() => {
-      toggle.classList.add('visible');
-      back.classList.add('visible');
-      document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
-      document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
-    }, 500);
+
+    // cuando el iframe carga
+    app.onload = function() {
+      clearTimeout(loadTimer);
+      ocultarLoader();
+      app.classList.add('show');
+      topbar.classList.add('visible');
+      setToggleActivo(mode);
+
+      // vigilar si el usuario hace "Salir" (la URL del iframe vuelve al mismo src o cambia)
+      watchReload();
+    };
+
+    // fallback por si onload no dispara (cross-origin)
+    loadTimer = setTimeout(() => {
+      ocultarLoader();
+      app.classList.add('show');
+      topbar.classList.add('visible');
+      setToggleActivo(mode);
+      watchReload();
+    }, 5000);
   }
 
   function cambiar(mode) {
     if (mode === current) return;
     current = mode;
+    setToggleActivo(mode);
+
+    // ocultar iframe con loader
     app.classList.remove('show');
-    document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
-    document.getElementById('btn-user').classList.toggle('active',  mode === 'user');
+    mostrarLoader(mode === 'admin' ? 'Cargando panel Admin...' : 'Cargando portal Usuario...');
+
     setTimeout(() => {
       app.src = URLS[mode];
-      app.onload = () => setTimeout(() => app.classList.add('show'), 200);
+      app.onload = function() {
+        clearTimeout(loadTimer);
+        ocultarLoader();
+        app.classList.add('show');
+        watchReload();
+      };
+      loadTimer = setTimeout(() => {
+        ocultarLoader();
+        app.classList.add('show');
+        watchReload();
+      }, 5000);
     }, 300);
   }
 
   function volver() {
     app.classList.remove('show');
-    toggle.classList.remove('visible');
-    back.classList.remove('visible');
+    topbar.classList.remove('visible');
+    app.classList.remove('with-bar');
+    clearTimeout(loadTimer);
+    ocultarLoader();
     setTimeout(() => {
       app.src = '';
       current = null;
       menu.classList.remove('hide');
-    }, 400);
+    }, 350);
+  }
+
+  // Detectar "Salir" dentro del script: cuando el iframe recarga el mismo src
+  // (Google Apps Script hace location.reload() al cerrar sesión)
+  let watchInterval = null;
+  function watchReload() {
+    clearInterval(watchInterval);
+    // Chequeamos cada 2s si el iframe volvió a disparar onload de nuevo
+    // (cross-origin: no podemos leer la URL, pero sí escuchar el evento load de nuevo)
+    // Se setea en el propio onload, así que cada vez que el iframe carga de nuevo
+    // se ejecuta onload otra vez → si ya estamos logueados y el script recargó = salida
+    let loadCount = 0;
+    const originalOnLoad = app.onload;
+    app.onload = function() {
+      loadCount++;
+      if (loadCount > 0) {
+        // El script recargó (usuario dio Salir) → re-lanzar el mismo perfil desde cero
+        clearTimeout(loadTimer);
+        app.classList.remove('show');
+        mostrarLoader('Reiniciando sesión...');
+        setTimeout(() => {
+          app.src = URLS[current];
+          loadTimer = setTimeout(() => {
+            ocultarLoader();
+            app.classList.add('show');
+          }, 5000);
+          app.onload = function() {
+            clearTimeout(loadTimer);
+            ocultarLoader();
+            app.classList.add('show');
+            watchReload();
+          };
+        }, 800);
+      }
+    };
   }
 </script>
 
-<!-- canvas animado fondo derecho -->
+<!-- canvas animado -->
 <script>
 (function(){
   const canvas = document.getElementById('dot-canvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const SPACING = 28;
-  let cols, rows, dots = [];
+  let dots = [];
   let mouse = {x:-9999, y:-9999};
   let time = 0;
   const panel = canvas.parentElement;
@@ -282,15 +401,16 @@
   panel.addEventListener('mouseleave', () => { mouse.x=-9999; mouse.y=-9999; });
   function resize(){
     canvas.width = panel.offsetWidth; canvas.height = panel.offsetHeight;
-    cols = Math.ceil(canvas.width/SPACING)+1; rows = Math.ceil(canvas.height/SPACING)+1;
+    const cols = Math.ceil(canvas.width/SPACING)+1;
+    const rows = Math.ceil(canvas.height/SPACING)+1;
     dots = [];
     for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) dots.push({ox:c*SPACING, oy:r*SPACING});
   }
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height); time+=.018;
     for(let i=0;i<dots.length;i++){
-      const d = dots[i];
-      const wave = Math.sin(d.ox*.06*.18 + d.oy*.04*.18 + time*.9)*6;
+      const d=dots[i];
+      const wave=Math.sin(d.ox*.011+d.oy*.007+time*.9)*6;
       let x=d.ox+wave, y=d.oy+wave*.5;
       const dx=x-mouse.x, dy=y-mouse.y;
       const dist=Math.sqrt(dx*dx+dy*dy);
